@@ -9,23 +9,23 @@ const {
   GraphQLList,
 } = qraphql
 
-const movies = [
-  { id: '1', name: 'Alexey', genre: 'screamer', directorId: '1' },
-  { id: '2', name: 'my life', genre: 'comedi', directorId: '2' },
-  { id: '3', name: 'eards', genre: 'distruct', directorId: '3' },
-  { id: '4', name: 'dom', genre: 'triler', directorId: '3' },
-  { id: '5', name: 'dogs', genre: 'screamer', directorId: '1' },
-  { id: '6', name: 'Bitcoin', genre: 'screamer', directorId: '1' },
-  { id: '7', name: 'Cardano', genre: 'screamer', directorId: '1' },
-  { id: '8', name: 'Ethirium', genre: 'comedi', directorId: '2' },
-  { id: '9', name: 'doms', genre: 'distruct', directorId: '3' },
-]
-const directors = [
-  { id: '1', name: 'Quntin tarantino', age: 70 },
-  { id: '2', name: 'PUTIN', age: 1000 },
-  { id: '3', name: 'Elizaveta', age: 40 },
-  { id: '4', name: 'Malkolm', age: 14 },
-]
+// const movies = [
+//   { id: '1', name: 'Alexey', genre: 'screamer', directorId: '1' },
+//   { id: '2', name: 'my life', genre: 'comedi', directorId: '2' },
+//   { id: '3', name: 'eards', genre: 'distruct', directorId: '3' },
+//   { id: '4', name: 'dom', genre: 'triler', directorId: '3' },
+//   { id: '5', name: 'dogs', genre: 'screamer', directorId: '1' },
+//   { id: '6', name: 'Bitcoin', genre: 'screamer', directorId: '1' },
+//   { id: '7', name: 'Cardano', genre: 'screamer', directorId: '1' },
+//   { id: '8', name: 'Ethirium', genre: 'comedi', directorId: '2' },
+//   { id: '9', name: 'doms', genre: 'distruct', directorId: '3' },
+// ]
+// const directors = [
+//   { id: '1', name: 'Quntin tarantino', age: 70 },
+//   { id: '2', name: 'PUTIN', age: 1000 },
+//   { id: '3', name: 'Elizaveta', age: 40 },
+//   { id: '4', name: 'Malkolm', age: 14 },
+// ]
 
 const MovieType = new GraphQLObjectType({
   name: 'Movie',
