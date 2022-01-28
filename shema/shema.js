@@ -9,29 +9,48 @@ const {
   GraphQLList,
 } = qraphql;
 
-const movies = [
-  { id: "1", name: "Alexey", genre: "screamer", directorId: "1" },
-  { id: "2", name: "my life", genre: "comedi", directorId: "2" },
-  { id: "3", name: "eards", genre: "distruct", directorId: "3" },
-  { id: "4", name: "dom", genre: "triler", directorId: "3" },
-  { id: "5", name: "dogs", genre: "screamer", directorId: "1" },
-  { id: "6", name: "Bitcoin", genre: "screamer", directorId: "1" },
-  { id: "7", name: "Cardano", genre: "screamer", directorId: "1" },
-  { id: "8", name: "Ethirium", genre: "comedi", directorId: "2" },
-  { id: "9", name: "doms", genre: "distruct", directorId: "3" },
-];
-const monsters = [
-  { id: "1", name: "chupakabra", weight: 10330 },
-  { id: "2", name: "putin", weight: 55 },
-  { id: "3", name: "apolon", weight: 10330 },
-  { id: "4", name: "kristiano", weight: 90 },
-];
-const directors = [
-  { id: "1", name: "Quntin tarantino", age: 70 },
-  { id: "2", name: "PUTIN", age: 1000 },
-  { id: "3", name: "Elizaveta", age: 40 },
-  { id: "4", name: "Malkolm", age: 14 },
-];
+// const movies = [
+//   { id: "1", name: "Alexey", genre: "screamer", directorId: "1" },
+//   { id: "2", name: "my life", genre: "comedi", directorId: "2" },
+//   { id: "3", name: "eards", genre: "distruct", directorId: "3" },
+//   { id: "4", name: "dom", genre: "triler", directorId: "3" },
+//   { id: "5", name: "dogs", genre: "screamer", directorId: "1" },
+//   { id: "6", name: "Bitcoin", genre: "screamer", directorId: "1" },
+//   { id: "7", name: "Cardano", genre: "screamer", directorId: "1" },
+//   { id: "8", name: "Ethirium", genre: "comedi", directorId: "2" },
+//   { id: "9", name: "doms", genre: "distruct", directorId: "3" },
+// ];
+// const monsters = [
+//   { id: "1", name: "chupakabra", weight: 10330 },
+//   { id: "2", name: "putin", weight: 55 },
+//   { id: "3", name: "apolon", weight: 10330 },
+//   { id: "4", name: "kristiano", weight: 90 },
+// ];
+// const directors = [
+//   { id: "1", name: "Quntin tarantino", age: 70 },
+//   { id: "2", name: "PUTIN", age: 1000 },
+//   { id: "3", name: "Elizaveta", age: 40 },
+//   { id: "4", name: "Malkolm", age: 14 },
+// ];
+
+// const moviesJSON = [
+//   { id: "1", name: "Alexey", genre: "screamer", "directorId": }, 61f4393dfd9a6b32c981ead8
+//   { id: "2", name: "my life", genre: "comedi", "directorId": }, 61f43a09fd9a6b32c981ead9
+//   { id: "3", name: "eards", genre: "distruct", "directorId": }, 61f43a7cfd9a6b32c981eadb
+//   { id: "4", name: "dom", genre: "triler", "directorId": },
+//   { id: "5", name: "dogs", genre: "screamer", "directorId": },
+//   { id: "6", name: "Bitcoin", genre: "screamer", "directorId": },
+//   { id: "7", name: "Cardano", genre: "screamer", "directorId": },
+//   { id: "8", name: "Ethirium", genre: "comedi", "directorId": },
+//   { id: "9", name: "doms", genre: "distruct", "directorId": },
+// ];
+
+// const directorsJSON = [
+//   { name: "Quntin tarantino", age: 70 }, 61f438113f860cf9b295b1cf
+//   { name: "PUTIN", age: 1000 }, 61f43aacfd9a6b32c981eadc
+//   { name: "Elizaveta", age: 40 }, 61f43addfd9a6b32c981eadd
+//   { name: "Malkolm", age: 14 },
+// ];
 
 const MovieType = new GraphQLObjectType({
   name: "Movie",
@@ -53,12 +72,12 @@ const MonsterType = new GraphQLObjectType({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
     weight: { type: GraphQLInt },
-    direc: {
-      type: DirectorType,
-      resolve(parent, args) {
-        return directors.find(el => el.id === parent.id)
-      }
-    }
+    // director: {
+    //   type: DirectorType,
+    //   resolve(parent, args) {
+    //     return directors.find((director) => director.id === parent.id);
+    //   },
+    // },
   }),
 });
 
@@ -114,7 +133,7 @@ const DirectorType = new GraphQLObjectType({
 const Query = new GraphQLObjectType({
   name: "Query",
   fields: {
-    monsters: {
+    monster: {
       type: MonsterType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
@@ -126,6 +145,13 @@ const Query = new GraphQLObjectType({
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
         return movies.find((el) => el.id === args.id);
+      },
+    },
+    monsters: {
+      type: new GraphQLList(MonsterType),
+      args: { id: { type: GraphQLID } },
+      resolve(parent, args) {
+        return monsters;
       },
     },
   },

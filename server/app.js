@@ -1,16 +1,30 @@
-const express = require('express');
-const graphqlHTTP = require('express-graphql');
-const schema = require("../shema/shema")
+const express = require("express");
+const graphqlHTTP = require("express-graphql");
+const schema = require("../shema/shema");
+
+const mongoose = require("mongoose");
 
 const app = express();
 const PORT = 3000;
 
-app.use('/graphql', graphqlHTTP({
-  schema,
-  graphiql: true,
-}));
+mongoose.connect(
+  `mongodb+srv://ALEXEY:123456654321@graphql-tutorial.9yv7x.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
+  { useNewUrlParser: true }
+);
+
+app.use(
+  "/graphql",
+  graphqlHTTP({
+    schema,
+    graphiql: true,
+  })
+);
+
+const dbConection = mongoose.connection;
+dbConection.on("error", (err) => console.log(`conecnte rror: ${err}`));
+dbConection.once("open", () => console.log(`conecnted to db`));
 
 
-app.listen(PORT, err => {
-  err ? console.log(err) : console.log('Server started!');
+app.listen(PORT, (err) => {
+  err ? console.log(err) : console.log("Server started!");
 });
