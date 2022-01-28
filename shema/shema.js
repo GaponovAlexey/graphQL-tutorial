@@ -9,6 +9,9 @@ const {
   GraphQLList,
 } = qraphql;
 
+const Movies = require('../server/models')
+const Directors = require('../server/directors')
+
 // const movies = [
 //   { id: "1", name: "Alexey", genre: "screamer", directorId: "1" },
 //   { id: "2", name: "my life", genre: "comedi", directorId: "2" },
@@ -61,7 +64,8 @@ const MovieType = new GraphQLObjectType({
     director: {
       type: DirectorType,
       resolve(parent, args) {
-        return directors.find((director) => director.id === parent.directorId);
+        // return directors.find((director) => director.id === parent.directorId);
+        return Directors.findById(parent.directorId)
       },
     },
   }),
@@ -72,12 +76,13 @@ const MonsterType = new GraphQLObjectType({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
     weight: { type: GraphQLInt },
-    // director: {
-    //   type: DirectorType,
-    //   resolve(parent, args) {
-    //     return directors.find((director) => director.id === parent.id);
-    //   },
-    // },
+    director: {
+      type: DirectorType,
+      resolve(parent, args) {
+        return directors.find((director) => director.id === parent.id);
+        
+      },
+    },
   }),
 });
 
@@ -90,72 +95,76 @@ const DirectorType = new GraphQLObjectType({
     movie: {
       type: new GraphQLList(MovieType),
       resolve(parent, args) {
-        return movies.filter((move) => move.directorId === parent.id);
+        // return movies.filter((move) => move.directorId === parent.id);
+        return Movies.find({directorId: parent.id})
       },
     },
   }),
 });
 
-// const Query = new GraphQLObjectType({
-//   name: 'Query',
-//   fields: {
-//     movie: {
-//       type: MovieType,
-//       args: { id: { type: GraphQLID } },
-//       resolve(parent, args) {
-//         return movies.find((movie) => movie.id == args.id)
-//       },
-//     },
-//     director: {
-//       type: DirectorType,
-//       args: { id: { type: GraphQLID } },
-//       resolve(parent, args) {
-//         return directors.find((director) => director.id == args.id)
-//       },
-//     },
-//     movies: {
-//       type: new GraphQLList(MovieType),
-//       args: {id: {type: GraphQLID}},
-//       resolve(parent, args) {
-//         return movies;
-//       }
-//     },
-//     directors: {
-//       type: new GraphQLList(DirectorType),
-//       args: {id: {type: GraphQLID}},
-//       resolve(parent, args) {
-//         return directors;
-//       }
-//     },
-//   },
-// })
-
 const Query = new GraphQLObjectType({
-  name: "Query",
+  name: 'Query',
   fields: {
-    monster: {
-      type: MonsterType,
-      args: { id: { type: GraphQLID } },
-      resolve(parent, args) {
-        return monsters.find((el) => el.id === args.id);
-      },
-    },
     movie: {
       type: MovieType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        return movies.find((el) => el.id === args.id);
+        // return movies.find((movie) => movie.id == args.id)
+        return Movies.findById(args.id)
       },
     },
-    monsters: {
-      type: new GraphQLList(MonsterType),
+    director: {
+      type: DirectorType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        return monsters;
+        // return directors.find((director) => director.id == args.id)
+        return Directors.findById(args.id)
       },
     },
+    movies: {
+      type: new GraphQLList(MovieType),
+      args: {id: {type: GraphQLID}},
+      resolve(parent, args) {
+        // return movies;
+        return Movies.find({})
+      }
+    },
+    directors: {
+      type: new GraphQLList(DirectorType),
+      args: {id: {type: GraphQLID}},
+      resolve(parent, args) {
+        return Directors.find({})
+      }
+    },
   },
-});
+})
+
+// const Query = new GraphQLObjectType({
+//   name: "Query",
+//   fields: {
+//     monster: {
+//       type: MonsterType,
+//       args: { id: { type: GraphQLID } },
+//       resolve(parent, args) {
+//         return monsters.find((el) => el.id === args.id);
+//       },
+//     },
+//     movie: {
+//       type: MovieType,
+//       args: { id: { type: GraphQLID } },
+//       resolve(parent, args) {
+//         return movies.find((el) => el.id === args.id);
+//       },
+//     },
+//     monsters: {
+//       type: new GraphQLList(MonsterType),
+//       args: { id: { type: GraphQLID } },
+//       resolve(parent, args) {
+//         return monsters;
+//       },
+//     },
+//   },
+// });
 
 module.exports = new GraphQLSchema({
   query: Query,
