@@ -106,6 +106,22 @@ const Mutation = new GraphQLObjectType({
         return director.save();
       },
     },
+    addMuvies: {
+      type: MovieType,
+      args: {
+        name: { type: GraphQLString },
+        genre: { type: GraphQLString },
+        directorId: { type: GraphQLString },
+      },
+      resolve(parent, args) {
+        const movie = new Movies({
+          name: args.name,
+          genre: args.genre,
+          directorId: args.directorId,
+        })
+        return movie.save()
+      }
+    },
   },
 });
 
@@ -148,5 +164,4 @@ const Query = new GraphQLObjectType({
 module.exports = new GraphQLSchema({
   query: Query,
   mutation: Mutation,
-
 });
