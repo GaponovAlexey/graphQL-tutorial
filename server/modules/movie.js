@@ -8,4 +8,4 @@ const moviesSchema = new Schema({
   directorId: String,
 });
 
-module.exports = mongoose.model("Movie", moviesSchema);
+module.exports = mongoose.model("movies", moviesSchema);

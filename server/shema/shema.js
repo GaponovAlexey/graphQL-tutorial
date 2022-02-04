@@ -9,8 +9,8 @@ const {
   GraphQLList,
 } = qraphql;
 
-const Movies = require("../modules/movie");
 const Directors = require("../modules/director");
+const Movies = require("../modules/movie");
 
 // const movies = [
 //   { id: "1", name: "Alexey", genre: "screamer", directorId: "1" },
@@ -62,11 +62,13 @@ const MovieType = new GraphQLObjectType({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
     genre: { type: GraphQLString },
+    directorId: { type: GraphQLString },
     director: {
-      type: DirectorType,
+      type:  new GraphQLList(DirectorType),
       resolve(parent, args) {
         // return directors.find((director) => director.id === parent.directorId);
         return Directors.findById(parent.directorId);
+        // return Directors.find({ })
       },
     },
   }),
@@ -82,7 +84,7 @@ const DirectorType = new GraphQLObjectType({
       type: new GraphQLList(MovieType),
       resolve(parent, args) {
         // return movies.filter((move) => move.directorId === parent.id);
-        return Movies.find({ directorId: parent.id });
+        return Movies.find({});
       },
     },
   }),
@@ -111,7 +113,6 @@ const Query = new GraphQLObjectType({
       type: new GraphQLList(MovieType),
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        // return movies;
         return Movies.find({});
       },
     },
@@ -124,7 +125,6 @@ const Query = new GraphQLObjectType({
     },
   },
 });
-
 
 module.exports = new GraphQLSchema({
   query: Query,

@@ -8,7 +8,7 @@ const app = express();
 const PORT = 3000;
 
 mongoose.connect(
-  `mongodb+srv://ALEXEY:123456654321@graphql-tutorial.9yv7x.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
+  `mongodb+srv://ALEXEY:123456654321@graphql-tutorial.9yv7x.mongodb.net/movies?retryWrites=true&w=majority`,
   { useNewUrlParser: true }
 );
 
@@ -21,9 +21,12 @@ app.use(
 );
 
 const dbConection = mongoose.connection;
+
 dbConection.on("error", (err) => console.log(`conecnte rror: ${err}`));
 dbConection.once("open", () => console.log(`conecnted to db`));
 
 app.listen(PORT, (err) => {
-  err ? console.log(err) : console.log("Server started!");
+  err ? console.log(err) : console.log(`Server started! + ${PORT}`);
 });
+
+
