@@ -1,6 +1,6 @@
 const express = require("express");
 const graphqlHTTP = require("express-graphql");
-const schema = require("../shema/shema");
+const schema = require("./shema/shema");
 
 const mongoose = require("mongoose");
 
@@ -23,7 +23,6 @@ app.use(
 const dbConection = mongoose.connection;
 dbConection.on("error", (err) => console.log(`conecnte rror: ${err}`));
 dbConection.once("open", () => console.log(`conecnted to db`));
-
 
 app.listen(PORT, (err) => {
   err ? console.log(err) : console.log("Server started!");
