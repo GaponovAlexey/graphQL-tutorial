@@ -1,11 +1,13 @@
 const express = require("express");
 const graphqlHTTP = require("express-graphql");
-const schema = require("./shema/shema");
+const cors = require("cors");
 
+const schema = require("./shema/shema");
 const mongoose = require("mongoose");
 
 const app = express();
-const PORT = 3000;
+const PORT = 3001;
+app.use(cors());
 
 mongoose.connect(
   `mongodb+srv://ALEXEY:123456654321@graphql-tutorial.9yv7x.mongodb.net/movies?retryWrites=true&w=majority`,
@@ -28,5 +30,3 @@ dbConection.once("open", () => console.log(`conecnted to db`));
 app.listen(PORT, (err) => {
   err ? console.log(err) : console.log(`Server started! + ${PORT}`);
 });
-
-
