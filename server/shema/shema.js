@@ -7,6 +7,7 @@ const {
   GraphQLID,
   GraphQLInt,
   GraphQLList,
+  GraphQLNonNull
 } = qraphql;
 
 const Directors = require("../modules/director");
@@ -60,8 +61,8 @@ const MovieType = new GraphQLObjectType({
   name: "Movie",
   fields: () => ({
     id: { type: GraphQLID },
-    name: { type: GraphQLString },
-    genre: { type: GraphQLString },
+    name: { type: new GraphQLNonNull(GraphQLString) },
+    genre: { type: new GraphQLNonNull(GraphQLString) },
     directorId: { type: GraphQLString },
     director: {
       type: new GraphQLList(DirectorType),
@@ -77,8 +78,8 @@ const DirectorType = new GraphQLObjectType({
   name: "Director",
   fields: () => ({
     id: { type: GraphQLID },
-    name: { type: GraphQLString },
-    age: { type: GraphQLInt },
+    name: { type: new GraphQLNonNull(GraphQLString) },
+    age: { type: new GraphQLNonNull(GraphQLInt) },
     movie: {
       type: new GraphQLList(MovieType),
       resolve(parent, args) {
@@ -95,8 +96,8 @@ const Mutation = new GraphQLObjectType({
     addDirector: {
       type: DirectorType,
       args: {
-        name: { type: GraphQLString },
-        age: { type: GraphQLInt },
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        age: { type: new GraphQLNonNull(GraphQLInt) },
       },
       resolve(parent, args) {
         const director = new Directors({
@@ -109,9 +110,9 @@ const Mutation = new GraphQLObjectType({
     addMuvies: {
       type: MovieType,
       args: {
-        name: { type: GraphQLString },
-        genre: { type: GraphQLString },
-        directorId: { type: GraphQLString },
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        genre: { type: new GraphQLNonNull(GraphQLString) },
+        directorId: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve(parent, args) {
         const movie = new Movies({
@@ -143,9 +144,9 @@ const Mutation = new GraphQLObjectType({
     updateDirectors: {
       type: DirectorType,
       args: {
-        id: { type: GraphQLID },
-        name: { type: GraphQLString },
-        age: { type: GraphQLInt },
+        id: { type: new GraphQLNonNull(GraphQLID) },
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        age: { type: new GraphQLNonNull(GraphQLInt) },
       },
       resolve(parent, args) {
         return Directors.findByIdAndUpdate(
@@ -158,10 +159,10 @@ const Mutation = new GraphQLObjectType({
     updateMuvies: {
       type: MovieType,
       args: {
-        id: { type: GraphQLID },
-        name: { type: GraphQLString },
-        genre: { type: GraphQLString },
-        directorId: { type: GraphQLString },
+        id: { type: new GraphQLNonNull(GraphQLID) },
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        genre: { type: new GraphQLNonNull(GraphQLString) },
+        directorId: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve(parent, args) {
         return Movies.findByIdAndUpdate(
