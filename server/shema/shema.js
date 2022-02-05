@@ -158,7 +158,7 @@ const Mutation = new GraphQLObjectType({
     updateMuvies: {
       type: MovieType,
       args: {
-        id: {type: GraphQLID},
+        id: { type: GraphQLID },
         name: { type: GraphQLString },
         genre: { type: GraphQLString },
         directorId: { type: GraphQLString },
@@ -166,9 +166,15 @@ const Mutation = new GraphQLObjectType({
       resolve(parent, args) {
         return Movies.findByIdAndUpdate(
           args.id,
-          {$set: {name: 'jva4a', genre: 'kimedi', directorId: 'dirid'}},
-          {new: true}
-        )
+          {
+            $set: {
+              name: args.name,
+              genre: args.genre,
+              directorId: args.directorId,
+            },
+          },
+          { new: true }
+        );
       },
     },
   },
